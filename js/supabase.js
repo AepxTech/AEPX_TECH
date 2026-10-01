@@ -1,6 +1,6 @@
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-const SUPABASE_URL = "https://woolnetmbzipnvrex.supabase.co";
+const SUPABASE_URL = "https://woolnletmbzipnrvexir.supabase.co";
 
 // Use your actual Supabase publishable key here.
 const SUPABASE_PUBLISHABLE_KEY =

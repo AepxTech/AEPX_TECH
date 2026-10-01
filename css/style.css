@@ -696,13 +696,14 @@ nav a:hover {
   );
   pointer-events: none;
 }
-
 .founders-photo img {
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+  display: block;
+
+  object-fit: contain;
   object-position: center;
+
   transition: transform 500ms ease;
 }
 

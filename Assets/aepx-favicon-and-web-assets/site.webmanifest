@@ -1,13 +1,19 @@
 {
-  "name": "AEPX Tech",
+  "name": "AEPX TECH",
   "short_name": "AEPX",
-  "description": "Ideas | Technology | Impact",
   "icons": [
-    { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" },
-    { "src": "/maskable-512x512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+    {
+      "src": "/Assets/favicon/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/Assets/favicon/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
   ],
-  "theme_color": "#0A7BEF",
-  "background_color": "#FFFFFF",
+  "theme_color": "#102a56",
+  "background_color": "#ffffff",
   "display": "standalone"
 }

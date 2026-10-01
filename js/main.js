@@ -323,3 +323,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+/* =========================================================
+   BOOK PRODUCT - COMING SOON
+========================================================= */
+
+const productBookButton = document.getElementById("productBookButton");
+
+const productComingSoon = document.getElementById("productComingSoon");
+
+if (productBookButton && productComingSoon) {
+  productBookButton.addEventListener("click", () => {
+    // Show coming soon message
+    productComingSoon.hidden = false;
+
+    // Update button
+    productBookButton.textContent = "Coming Soon";
+    productBookButton.disabled = true;
+  });
+}

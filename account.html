@@ -352,16 +352,14 @@
         setMessage("Connecting to Google...");
 
         try {
-          const redirectUrl = window.location.origin + "/account.html";
+          const redirectUrl = "https://aepxtech.vercel.app/";
 
           const { data, error } = await client.auth.signInWithOAuth({
             provider: "google",
-
             options: {
               redirectTo: redirectUrl,
             },
           });
-
           if (error) {
             throw error;
           }
@@ -416,7 +414,7 @@
               password: userPassword,
 
               options: {
-                emailRedirectTo: window.location.origin + "/account.html",
+                emailRedirectTo: "https://aepxtech.vercel.app/",
               },
             });
 

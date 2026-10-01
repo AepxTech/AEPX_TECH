@@ -1,11 +1,7 @@
 /* =========================================================
    AEPX TECH
-   Clean responsive website design
+   Smart water monitoring website
 ========================================================= */
-
-/* -----------------------------
-   Design tokens
------------------------------- */
 
 :root {
   --bg: #f7f9fc;
@@ -47,10 +43,6 @@
 
   box-sizing: border-box;
 }
-
-/* -----------------------------
-   Reset and base
------------------------------- */
 
 *,
 *::before,
@@ -141,10 +133,6 @@ h3 {
   outline-offset: 4px;
 }
 
-/* -----------------------------
-   Accessibility
------------------------------- */
-
 .sr-only {
   position: absolute;
   width: 1px;
@@ -172,10 +160,6 @@ h3 {
 .skip:focus {
   left: 8px;
 }
-
-/* -----------------------------
-   Layout
------------------------------- */
 
 .wrap {
   width: min(100% - 2rem, var(--container));
@@ -211,9 +195,7 @@ section {
   font-size: 1.08rem;
 }
 
-/* -----------------------------
-   Header and navigation
------------------------------- */
+/* Header */
 
 .site-header {
   position: sticky;
@@ -305,9 +287,7 @@ nav a:hover {
   border-color: #a9c5ef;
 }
 
-/* -----------------------------
-   Buttons
------------------------------- */
+/* Buttons */
 
 .btn {
   display: inline-flex;
@@ -358,9 +338,7 @@ nav a:hover {
   font-size: 0.92rem;
 }
 
-/* -----------------------------
-   Hero
------------------------------- */
+/* Hero */
 
 .hero {
   position: relative;
@@ -519,9 +497,7 @@ nav a:hover {
   line-height: 1.5;
 }
 
-/* -----------------------------
-   Stats
------------------------------- */
+/* Stats */
 
 .stats {
   padding: 0;
@@ -566,9 +542,7 @@ nav a:hover {
   font-size: 0.92rem;
 }
 
-/* -----------------------------
-   Grids
------------------------------- */
+/* Grids and cards */
 
 .grid {
   display: grid;
@@ -589,10 +563,6 @@ nav a:hover {
   gap: 56px;
   align-items: start;
 }
-
-/* -----------------------------
-   Cards
------------------------------- */
 
 .card {
   display: flex;
@@ -661,10 +631,6 @@ nav a:hover {
   font-weight: 900;
 }
 
-/* -----------------------------
-   Why AEPX
------------------------------- */
-
 .feature-number {
   display: inline-flex;
   align-items: center;
@@ -679,9 +645,7 @@ nav a:hover {
   font-weight: 800;
 }
 
-/* -----------------------------
-   Founders
------------------------------- */
+/* Founders */
 
 .founders-heading {
   display: grid;
@@ -801,9 +765,7 @@ nav a:hover {
   font-size: 0.88rem;
 }
 
-/* -----------------------------
-   FAQ
------------------------------- */
+/* FAQ */
 
 .faq-section {
   background: var(--bg);
@@ -836,9 +798,7 @@ details p {
   color: var(--muted);
 }
 
-/* -----------------------------
-   CTA
------------------------------- */
+/* CTA */
 
 .cta-band {
   position: relative;
@@ -908,9 +868,7 @@ details p {
   background: #ffd86a;
 }
 
-/* -----------------------------
-   Contact and form
------------------------------- */
+/* Contact and form */
 
 #contact .two {
   align-items: center;
@@ -1039,9 +997,7 @@ textarea {
   font-weight: 700;
 }
 
-/* -----------------------------
-   Footer
------------------------------- */
+/* Footer */
 
 .site-footer {
   padding: 58px 0 24px;
@@ -1135,9 +1091,99 @@ textarea {
   margin: 0;
 }
 
-/* -----------------------------
-   Website assistant
------------------------------- */
+/* Video modal */
+
+.video-open-btn {
+  border: 0;
+  font: inherit;
+}
+
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.video-modal[hidden] {
+  display: none;
+}
+
+.video-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 20, 45, 0.78);
+  backdrop-filter: blur(5px);
+}
+
+.video-modal-content {
+  position: relative;
+  z-index: 1;
+  width: min(900px, 100%);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+}
+
+.video-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 18px;
+  background: var(--blue-900);
+}
+
+.video-modal-header h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.1rem;
+  letter-spacing: -0.02em;
+}
+
+.video-modal-close {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  color: #ffffff;
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.video-modal-close:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.product-demo-video {
+  display: block;
+  width: 100%;
+  max-height: 70vh;
+  background: #071a38;
+  object-fit: contain;
+}
+
+.video-modal-note {
+  margin: 0;
+  padding: 12px 18px 16px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+body.video-modal-open {
+  overflow: hidden;
+}
+
+/* Website assistant */
 
 .assistant-launcher {
   position: fixed;
@@ -1158,11 +1204,7 @@ textarea {
   font-size: 0.86rem;
   font-weight: 750;
   cursor: pointer;
-  opacity: 1;
-  visibility: visible;
   transition:
-    opacity 180ms ease,
-    visibility 180ms ease,
     transform 180ms ease,
     background-color 180ms ease,
     box-shadow 180ms ease;
@@ -1172,16 +1214,6 @@ textarea {
   background: var(--blue-900);
   box-shadow: var(--shadow-lg);
   transform: translateY(-2px);
-}
-
-.assistant-launcher:active {
-  transform: translateY(0);
-}
-
-.assistant-launcher-hidden {
-  visibility: hidden;
-  pointer-events: none;
-  opacity: 0;
 }
 
 .assistant-launcher-icon {
@@ -1336,10 +1368,6 @@ textarea {
   font-size: 0.78rem;
   font-weight: 650;
   cursor: pointer;
-  transition:
-    color 180ms ease,
-    background-color 180ms ease,
-    border-color 180ms ease;
 }
 
 .assistant-quick-button:hover {
@@ -1387,9 +1415,7 @@ textarea {
   line-height: 1.4;
 }
 
-/* -----------------------------
-   Legal pages
------------------------------- */
+/* Legal pages */
 
 .wrap.narrow h2 {
   margin-top: 2.25rem;
@@ -1405,9 +1431,7 @@ textarea {
   color: var(--blue-900);
 }
 
-/* -----------------------------
-   Tablet
------------------------------- */
+/* Tablet */
 
 @media (max-width: 980px) {
   .menu-btn {
@@ -1469,9 +1493,7 @@ textarea {
   }
 }
 
-/* -----------------------------
-   Medium screens
------------------------------- */
+/* Medium screens */
 
 @media (max-width: 850px) {
   .three {
@@ -1497,9 +1519,7 @@ textarea {
   }
 }
 
-/* -----------------------------
-   Mobile
------------------------------- */
+/* Mobile */
 
 @media (max-width: 700px) {
   html {
@@ -1514,11 +1534,6 @@ textarea {
     padding: 70px 0;
   }
 
-  /*
-    Mobile header:
-    logo is centered,
-    Menu button stays on the far right.
-  */
   .bar {
     position: relative;
     display: flex;
@@ -1529,8 +1544,6 @@ textarea {
   }
 
   .logo {
-    position: relative;
-    z-index: 1;
     margin: 0 auto;
   }
 
@@ -1692,6 +1705,31 @@ textarea {
     margin-top: 34px;
   }
 
+  .video-modal {
+    padding: 10px;
+  }
+
+  .video-modal-content {
+    border-radius: var(--radius-md);
+  }
+
+  .video-modal-header {
+    padding: 13px 14px;
+  }
+
+  .video-modal-header h2 {
+    font-size: 0.98rem;
+  }
+
+  .product-demo-video {
+    max-height: 62vh;
+  }
+
+  .video-modal-note {
+    padding: 10px 14px 13px;
+    font-size: 0.76rem;
+  }
+
   .assistant-launcher {
     right: 12px;
     bottom: calc(12px + env(safe-area-inset-bottom, 0px));
@@ -1712,10 +1750,6 @@ textarea {
     max-height: 42vh;
   }
 }
-
-/* -----------------------------
-   Small mobile
------------------------------- */
 
 @media (max-width: 520px) {
   h2 {
@@ -1749,7 +1783,6 @@ textarea {
   }
 
   .menu-btn {
-    right: 0;
     min-height: 34px;
     padding: 0 9px;
     font-size: 0.74rem;
@@ -1764,10 +1797,6 @@ textarea {
   }
 }
 
-/* -----------------------------
-   Reduced motion
------------------------------- */
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1779,18 +1808,4 @@ textarea {
     animation: none !important;
     transition: none !important;
   }
-}
-.bar {
-  position: relative;
-  justify-content: center;
-  padding: 0 48px;
-}
-
-.logo {
-  margin: 0 auto;
-}
-
-.menu-btn {
-  position: absolute;
-  right: 0;
 }

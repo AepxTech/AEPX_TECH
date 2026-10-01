@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const menuButton = document.querySelector(".menu-btn");
   const navigation = document.querySelector("#nav");
-  const navLinks = navigation ? navigation.querySelectorAll("a") : [];
 
   const openMenu = () => {
     if (!menuButton || !navigation) return;
@@ -34,29 +33,20 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    navLinks.forEach((link) => {
-      link.addEventListener("click", () => {
-        closeMenu();
-      });
+    navigation.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMenu);
     });
 
     document.addEventListener("click", (event) => {
-      const clickedInsideNavigation = navigation.contains(event.target);
+      const clickedNavigation = navigation.contains(event.target);
       const clickedMenuButton = menuButton.contains(event.target);
 
       if (
         navigation.classList.contains("open") &&
-        !clickedInsideNavigation &&
+        !clickedNavigation &&
         !clickedMenuButton
       ) {
         closeMenu();
-      }
-    });
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-        closeMenu();
-        menuButton.focus();
       }
     });
 
@@ -71,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
      Contact form validation
   ========================================================= */
 
-  const form = document.querySelector("#leadForm");
+  const leadForm = document.querySelector("#leadForm");
   const nameInput = document.querySelector("#n");
   const emailInput = document.querySelector("#e");
   const messageInput = document.querySelector("#m");
@@ -93,60 +83,53 @@ document.addEventListener("DOMContentLoaded", () => {
     setError(messageError, "");
   };
 
-  const validateForm = () => {
-    let isValid = true;
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
+  const validateLeadForm = () => {
+    let valid = true;
 
     clearErrors();
 
     if (nameInput && nameInput.value.trim().length < 2) {
       setError(nameError, "Please enter your name.");
-      isValid = false;
+      valid = false;
     }
 
-    if (emailInput) {
-      const email = emailInput.value.trim();
-      const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-
-      if (!validEmail) {
-        setError(emailError, "Please enter a valid email address.");
-        isValid = false;
-      }
+    if (emailInput && !isValidEmail(emailInput.value.trim())) {
+      setError(emailError, "Please enter a valid email address.");
+      valid = false;
     }
 
     if (messageInput && messageInput.value.trim().length < 10) {
       setError(
         messageError,
-        "Please describe your monitoring requirements in at least 10 characters.",
+        "Please describe your requirements in at least 10 characters.",
       );
-      isValid = false;
+      valid = false;
     }
 
-    return isValid;
+    return valid;
   };
 
-  if (form) {
-    form.addEventListener("submit", (event) => {
-      if (!validateForm()) {
+  if (leadForm) {
+    leadForm.addEventListener("submit", (event) => {
+      if (!validateLeadForm()) {
         event.preventDefault();
 
-        const firstInvalidInput = [nameInput, emailInput, messageInput].find(
-          (input) => {
-            if (!input) return false;
+        if (nameInput && nameInput.value.trim().length < 2) {
+          nameInput.focus();
+          return;
+        }
 
-            if (input === nameInput) {
-              return input.value.trim().length < 2;
-            }
+        if (emailInput && !isValidEmail(emailInput.value.trim())) {
+          emailInput.focus();
+          return;
+        }
 
-            if (input === emailInput) {
-              return !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
-            }
-
-            return input.value.trim().length < 10;
-          },
-        );
-
-        if (firstInvalidInput) {
-          firstInvalidInput.focus();
+        if (messageInput && messageInput.value.trim().length < 10) {
+          messageInput.focus();
         }
 
         return;
@@ -169,6 +152,109 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* =========================================================
+   Product demo video modal and sound control
+========================================================= */
+
+  const videoOpenButton = document.querySelector(".video-open-btn");
+  const videoModal = document.querySelector("#productVideoModal");
+  const productDemoVideo = document.querySelector("#productDemoVideo");
+  const videoCloseButtons = document.querySelectorAll("[data-video-close]");
+  const videoSoundToggle = document.querySelector("#videoSoundToggle");
+
+  const updateSoundButton = () => {
+    if (!productDemoVideo || !videoSoundToggle) return;
+
+    const isMuted = productDemoVideo.muted;
+
+    videoSoundToggle.setAttribute("aria-pressed", String(!isMuted));
+    videoSoundToggle.setAttribute(
+      "aria-label",
+      isMuted ? "Unmute video" : "Mute video",
+    );
+
+    const soundIcon = videoSoundToggle.querySelector(".sound-icon");
+    const soundLabel = videoSoundToggle.querySelector(".sound-label");
+
+    if (soundIcon) {
+      soundIcon.textContent = isMuted ? "🔇" : "🔊";
+    }
+
+    if (soundLabel) {
+      soundLabel.textContent = isMuted ? "Unmute" : "Mute";
+    }
+  };
+
+  const openVideoModal = () => {
+    if (!videoModal || !productDemoVideo) return;
+
+    videoModal.hidden = false;
+    document.body.classList.add("video-modal-open");
+
+    productDemoVideo.currentTime = 0;
+
+    /*
+    Starts muted only when the modal opens.
+    The visitor can then click Unmute, and JavaScript will not force it
+    back to muted while the modal stays open.
+  */
+    productDemoVideo.muted = true;
+    productDemoVideo.volume = 1;
+    updateSoundButton();
+
+    const playPromise = productDemoVideo.play();
+
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => {
+        /* Browser may require visitor to press play manually. */
+      });
+    }
+
+    const closeButton = videoModal.querySelector(".video-modal-close");
+
+    if (closeButton) {
+      closeButton.focus();
+    }
+  };
+
+  const closeVideoModal = () => {
+    if (!videoModal || !productDemoVideo) return;
+
+    productDemoVideo.pause();
+    productDemoVideo.currentTime = 0;
+
+    videoModal.hidden = true;
+    document.body.classList.remove("video-modal-open");
+
+    if (videoOpenButton) {
+      videoOpenButton.focus();
+    }
+  };
+
+  if (videoOpenButton && videoModal && productDemoVideo) {
+    videoOpenButton.addEventListener("click", openVideoModal);
+
+    videoCloseButtons.forEach((button) => {
+      button.addEventListener("click", closeVideoModal);
+    });
+
+    if (videoSoundToggle) {
+      videoSoundToggle.addEventListener("click", () => {
+        productDemoVideo.muted = !productDemoVideo.muted;
+
+        if (!productDemoVideo.muted && productDemoVideo.volume === 0) {
+          productDemoVideo.volume = 1;
+        }
+
+        updateSoundButton();
+      });
+    }
+
+    productDemoVideo.addEventListener("volumechange", updateSoundButton);
+
+    updateSoundButton();
+  }
+
+  /* =========================================================
      Website assistant
   ========================================================= */
 
@@ -176,24 +262,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const assistantPanel = document.querySelector("#assistantPanel");
   const assistantClose = document.querySelector("#assistantClose");
 
-  if (assistantLauncher && assistantPanel) {
+  const openAssistant = () => {
+    if (!assistantLauncher || !assistantPanel) return;
+
+    assistantPanel.hidden = false;
+    assistantLauncher.setAttribute("aria-expanded", "true");
+
     const assistantInput = assistantPanel.querySelector("#assistantInput");
 
-    const openAssistant = () => {
-      assistantPanel.hidden = false;
-      assistantLauncher.setAttribute("aria-expanded", "true");
+    if (assistantInput) {
+      assistantInput.focus();
+    }
+  };
 
-      if (assistantInput) {
-        assistantInput.focus();
-      }
-    };
+  const closeAssistant = () => {
+    if (!assistantLauncher || !assistantPanel) return;
 
-    const closeAssistant = () => {
-      assistantPanel.hidden = true;
-      assistantLauncher.setAttribute("aria-expanded", "false");
-      assistantLauncher.focus();
-    };
+    assistantPanel.hidden = true;
+    assistantLauncher.setAttribute("aria-expanded", "false");
+    assistantLauncher.focus();
+  };
 
+  if (assistantLauncher && assistantPanel) {
     assistantLauncher.addEventListener("click", () => {
       if (assistantPanel.hidden) {
         openAssistant();
@@ -205,11 +295,31 @@ document.addEventListener("DOMContentLoaded", () => {
     if (assistantClose) {
       assistantClose.addEventListener("click", closeAssistant);
     }
-
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && !assistantPanel.hidden) {
-        closeAssistant();
-      }
-    });
   }
+
+  /* =========================================================
+     Escape key for video, assistant, and menu
+  ========================================================= */
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+
+    if (videoModal && !videoModal.hidden) {
+      closeVideoModal();
+      return;
+    }
+
+    if (assistantPanel && !assistantPanel.hidden) {
+      closeAssistant();
+      return;
+    }
+
+    if (navigation && navigation.classList.contains("open")) {
+      closeMenu();
+
+      if (menuButton) {
+        menuButton.focus();
+      }
+    }
+  });
 });

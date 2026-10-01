@@ -154,24 +154,12 @@
     }
   }
 
-  function toggleAssistant(event) {
-    console.log("AEPX launcher CLICKED");
-    console.log("Panel hidden before:", panel.hidden);
-
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
-
+  function toggleAssistant() {
     if (panel.hidden) {
-      console.log("Opening assistant...");
       openAssistant();
     } else {
-      console.log("Closing assistant...");
       closeAssistant();
     }
-
-    console.log("Panel hidden after:", panel.hidden);
   }
   function handleFocusTrap(event) {
     if (panel.hidden || event.key !== "Tab") {
@@ -210,7 +198,6 @@
     quickActions.appendChild(button);
   });
 
-  console.log("AEPX assistant click listener attached");
   launcher.addEventListener("click", toggleAssistant);
   closeButton.addEventListener("click", closeAssistant);
 
@@ -228,29 +215,4 @@
 
     handleFocusTrap(event);
   });
-
-  var contactSection = document.querySelector("#contact");
-
-  if (contactSection && "IntersectionObserver" in window) {
-    var contactObserver = new IntersectionObserver(
-      function (entries) {
-        var isContactVisible = entries[0].isIntersecting;
-
-        launcher.classList.toggle(
-          "assistant-launcher-hidden",
-          isContactVisible,
-        );
-
-        if (isContactVisible && !panel.hidden) {
-          panel.hidden = true;
-          launcher.setAttribute("aria-expanded", "false");
-        }
-      },
-      {
-        threshold: 0.25,
-      },
-    );
-
-    contactObserver.observe(contactSection);
-  }
 })();

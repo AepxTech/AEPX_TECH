@@ -28,7 +28,10 @@
   }
 
   var lastFocusedElement = null;
-  var answerTimer = null;
+  var isWaiting = false;
+
+  // Stores recent conversation for Gemini.
+  var conversationHistory = [];
 
   var focusableSelector = [
     "button:not([disabled])",
@@ -39,14 +42,6 @@
     '[tabindex]:not([tabindex="-1"])',
   ].join(",");
 
-  function normalize(value) {
-    return value
-      .toLowerCase()
-      .replace(/[^\w\s]/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
   function scrollToLatestMessage() {
     messages.scrollTop = messages.scrollHeight;
   }
@@ -55,6 +50,7 @@
     var message = document.createElement("article");
     var author = document.createElement("span");
     var content = document.createElement("p");
+
     var isUser = sender === "user";
 
     message.className = isUser
@@ -76,6 +72,8 @@
     messages.appendChild(message);
 
     scrollToLatestMessage();
+
+    return message;
   }
 
   function showWelcomeMessage() {
@@ -84,55 +82,98 @@
     }
   }
 
-  function findAnswer(question) {
-    var normalizedQuestion = normalize(question);
+  async function askGemini(question) {
+    var response = await fetch("/api/chat", {
+      method: "POST",
 
-    var exactMatch = data.faqs.find(function (faq) {
-      return normalize(faq.question) === normalizedQuestion;
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        message: question,
+        history: conversationHistory,
+      }),
     });
 
-    if (exactMatch) {
-      return exactMatch.answer;
+    var result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.error || "The assistant is temporarily unavailable.",
+      );
     }
 
-    var directMatch = data.faqs.find(function (faq) {
-      return faq.keywords.some(function (keyword) {
-        return normalizedQuestion.includes(normalize(keyword));
-      });
-    });
-
-    if (directMatch) {
-      return directMatch.answer;
+    if (!result.reply) {
+      throw new Error("The assistant returned an empty response.");
     }
 
-    return data.fallbackMessage;
+    return result.reply;
   }
 
-  function submitQuestion(question) {
+  async function submitQuestion(question) {
     var cleanQuestion = question.trim();
 
-    if (!cleanQuestion) {
+    if (!cleanQuestion || isWaiting) {
       input.focus();
       return;
     }
 
     createMessage(cleanQuestion, "user");
+
     input.value = "";
 
-    if (answerTimer) {
-      window.clearTimeout(answerTimer);
-    }
+    isWaiting = true;
+    input.disabled = true;
 
-    answerTimer = window.setTimeout(function () {
-      createMessage(findAnswer(cleanQuestion), "bot");
+    var loadingMessage = createMessage("Thinking...", "bot");
+
+    try {
+      var reply = await askGemini(cleanQuestion);
+
+      loadingMessage.remove();
+
+      createMessage(reply, "bot");
+
+      // Add the completed conversation turn only after
+      // Gemini successfully responds.
+      conversationHistory.push({
+        role: "user",
+        text: cleanQuestion,
+      });
+
+      conversationHistory.push({
+        role: "model",
+        text: reply,
+      });
+
+      // Keep only the most recent messages.
+      if (conversationHistory.length > 8) {
+        conversationHistory = conversationHistory.slice(-8);
+      }
+    } catch (error) {
+      console.error("AEPX Assistant error:", error);
+
+      loadingMessage.remove();
+
+      createMessage(
+        "Sorry, I'm having trouble connecting right now. Please try again in a moment.",
+        "bot",
+      );
+    } finally {
+      isWaiting = false;
+      input.disabled = false;
       input.focus();
-    }, 250);
+
+      scrollToLatestMessage();
+    }
   }
 
   function openAssistant() {
     lastFocusedElement = document.activeElement;
 
     panel.hidden = false;
+
     launcher.setAttribute("aria-expanded", "true");
 
     showWelcomeMessage();
@@ -145,6 +186,7 @@
 
   function closeAssistant() {
     panel.hidden = true;
+
     launcher.setAttribute("aria-expanded", "false");
 
     if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
@@ -161,6 +203,7 @@
       closeAssistant();
     }
   }
+
   function handleFocusTrap(event) {
     if (panel.hidden || event.key !== "Tab") {
       return;
@@ -199,10 +242,12 @@
   });
 
   launcher.addEventListener("click", toggleAssistant);
+
   closeButton.addEventListener("click", closeAssistant);
 
   form.addEventListener("submit", function (event) {
     event.preventDefault();
+
     submitQuestion(input.value);
   });
 

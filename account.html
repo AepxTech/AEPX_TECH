@@ -17,7 +17,7 @@
 
     <header class="header">
       <div class="header-inner">
-        <a href="./index.html" class="logo"> AEPX TECH </a>
+        <a href="./index.html" class="logo">AEPX TECH</a>
 
         <a href="./index.html" class="home-link"> ← Back to Home </a>
       </div>
@@ -49,11 +49,11 @@
           <button class="google-button" id="googleButton" type="button">
             <span class="google-icon" aria-hidden="true"> G </span>
 
-            <span> Continue with Google </span>
+            <span>Continue with Google</span>
           </button>
 
           <div class="divider">
-            <span> or continue with email </span>
+            <span>or continue with email</span>
           </div>
 
           <!-- LOGIN / SIGNUP TABS -->
@@ -106,7 +106,7 @@
              MY ACCOUNT
         ========================== -->
 
-        <div id="accountDashboard" class="card-content">
+        <div id="accountDashboard" class="card-content" style="display: none">
           <h1>My Account</h1>
 
           <p class="subtitle">Manage your AEPX TECH account.</p>
@@ -127,10 +127,14 @@
             </div>
           </div>
 
-          <!-- ACCOUNT INFORMATION -->
+          <!-- =========================
+               ACCOUNT INFORMATION
+          ========================== -->
 
           <section class="account-section">
             <h3>Account information</h3>
+
+            <!-- EMAIL -->
 
             <div class="detail-row">
               <span class="detail-label"> Email </span>
@@ -138,11 +142,99 @@
               <span class="detail-value" id="accountEmail"></span>
             </div>
 
+            <!-- PHONE -->
+
+            <div class="detail-row phone-detail-row">
+              <span class="detail-label"> Phone </span>
+
+              <div class="phone-display">
+                <span class="detail-value" id="accountPhone"> Not added </span>
+
+                <button
+                  type="button"
+                  class="phone-edit-button"
+                  id="editPhoneButton"
+                >
+                  Add phone number
+                </button>
+              </div>
+            </div>
+
+            <!-- PHONE EDITOR -->
+
+            <div class="phone-editor" id="phoneEditor" hidden>
+              <label for="phoneNumber"> Phone number </label>
+
+              <div class="phone-input-row">
+                <select
+                  id="phoneCountryCode"
+                  class="phone-country-code"
+                  aria-label="Country code"
+                >
+                  <option value="+91">India +91</option>
+
+                  <option value="+1">USA / Canada +1</option>
+
+                  <option value="+44">United Kingdom +44</option>
+
+                  <option value="+61">Australia +61</option>
+
+                  <option value="+65">Singapore +65</option>
+
+                  <option value="+971">UAE +971</option>
+                </select>
+
+                <input
+                  id="phoneNumber"
+                  class="phone-number-input"
+                  type="tel"
+                  inputmode="numeric"
+                  autocomplete="tel-national"
+                  placeholder="9876543210"
+                  maxlength="15"
+                />
+              </div>
+
+              <p class="phone-help">
+                This phone number is saved to your AEPX account. It is not
+                verified.
+              </p>
+
+              <div class="phone-actions">
+                <button
+                  type="button"
+                  class="phone-save-button"
+                  id="savePhoneButton"
+                >
+                  Save phone number
+                </button>
+
+                <button
+                  type="button"
+                  class="phone-cancel-button"
+                  id="cancelPhoneButton"
+                >
+                  Cancel
+                </button>
+              </div>
+
+              <p
+                class="phone-message"
+                id="phoneMessage"
+                role="status"
+                aria-live="polite"
+              ></p>
+            </div>
+
+            <!-- SIGN IN METHOD -->
+
             <div class="detail-row">
               <span class="detail-label"> Sign-in method </span>
 
               <span class="detail-value" id="accountProvider"></span>
             </div>
+
+            <!-- MEMBER SINCE -->
 
             <div class="detail-row">
               <span class="detail-label"> Member since </span>
@@ -151,26 +243,29 @@
             </div>
           </section>
 
-          <!-- AEPX ACCOUNT OPTIONS -->
+          <!-- =========================
+               AEPX ACCOUNT OPTIONS
+          ========================== -->
 
           <section class="account-section">
             <h3>AEPX</h3>
 
             <div class="account-links">
-              <a href="#" class="account-link">
-                <strong> My Orders </strong>
+              <a href="./orders.html" class="account-link">
+                <strong>My Orders</strong>
 
                 <span> View your orders and order status </span>
               </a>
 
               <a href="#" class="account-link">
-                <strong> My Devices </strong>
+                <strong>My Devices</strong>
 
                 <span> Manage your registered AEPX products </span>
               </a>
 
               <a href="./index.html#contact" class="account-link">
-                <strong> Support </strong>
+                <strong>Support</strong>
+
                 <span> Get help with your AEPX products </span>
               </a>
             </div>

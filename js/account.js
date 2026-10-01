@@ -5,7 +5,7 @@
  * =========================================
  */
 
-/*
+/**
  * Wait for js/supabase.js to create
  * window.aepxSupabase.
  */
@@ -62,7 +62,37 @@ const loginTab = document.getElementById("loginTab");
 
 const signupTab = document.getElementById("signupTab");
 
+/**
+ * Phone elements
+ */
+
+const accountPhone = document.getElementById("accountPhone");
+
+const editPhoneButton = document.getElementById("editPhoneButton");
+
+const phoneEditor = document.getElementById("phoneEditor");
+
+const phoneCountryCode = document.getElementById("phoneCountryCode");
+
+const phoneNumber = document.getElementById("phoneNumber");
+
+const savePhoneButton = document.getElementById("savePhoneButton");
+
+const cancelPhoneButton = document.getElementById("cancelPhoneButton");
+
+const phoneMessage = document.getElementById("phoneMessage");
+
+/**
+ * =========================================
+ * STATE
+ * =========================================
+ */
+
 let mode = "login";
+
+let currentUser = null;
+
+let currentPhone = null;
 
 /**
  * =========================================
@@ -71,6 +101,10 @@ let mode = "login";
  */
 
 function setMessage(text, type = "") {
+  if (!message) {
+    return;
+  }
+
   message.textContent = text;
 
   message.classList.remove("success", "error");
@@ -127,6 +161,7 @@ signupTab.addEventListener("click", () => {
 googleButton.addEventListener("click", async () => {
   if (!client) {
     setMessage("Supabase did not load.", "error");
+
     return;
   }
 
@@ -166,6 +201,7 @@ form.addEventListener("submit", async (event) => {
 
   if (!client) {
     setMessage("Supabase did not load.", "error");
+
     return;
   }
 
@@ -173,13 +209,14 @@ form.addEventListener("submit", async (event) => {
 
   const userPassword = password.value;
 
-  /*
+  /**
    * Make sure passwords match
    * when creating an account.
    */
 
   if (mode === "signup" && userPassword !== confirmPassword.value) {
     setMessage("Passwords do not match.", "error");
+
     return;
   }
 
@@ -209,29 +246,25 @@ form.addEventListener("submit", async (event) => {
         throw error;
       }
 
-      /*
+      /**
        * If email confirmation is
        * disabled, Supabase may return
        * a session immediately.
        */
 
       if (data.session) {
-        /*
-         * Sync profile before leaving
-         * the account page.
-         */
-
         if (data.user) {
           await syncUserProfile(data.user);
         }
 
         window.location.href = "https://aepxtech.vercel.app/";
+
         return;
       }
 
-      /*
+      /**
        * Otherwise the user must
-       * confirm their email first.
+       * confirm their email.
        */
 
       setMessage(
@@ -254,20 +287,12 @@ form.addEventListener("submit", async (event) => {
         throw error;
       }
 
-      /*
-       * Sync the authenticated user's
-       * profile before redirecting.
-       */
-
       if (data.user) {
         await syncUserProfile(data.user);
       }
 
-      /*
-       * Successful email login.
-       */
-
       window.location.href = "https://aepxtech.vercel.app/";
+
       return;
     }
   } catch (error) {
@@ -281,7 +306,7 @@ form.addEventListener("submit", async (event) => {
 
 /**
  * =========================================
- * SYNC USER PROFILE TO DATABASE
+ * SYNC USER PROFILE
  * =========================================
  */
 
@@ -298,13 +323,13 @@ async function syncUserProfile(user) {
     user.email?.split("@")[0] ||
     "AEPX User";
 
-  /*
-   * Save/update the public.profiles row.
+  /**
+   * Upsert makes sure the user's
+   * profile exists.
    *
-   * The user's auth UUID is used as the
-   * profiles table ID.
-   *
-   * Email comes from Supabase Auth.
+   * Existing phone numbers are NOT
+   * included here, so this does not
+   * overwrite profiles.phone.
    */
 
   const { error } = await client.from("profiles").upsert(
@@ -321,6 +346,7 @@ async function syncUserProfile(user) {
 
   if (error) {
     console.error("Profile sync error:", error);
+
     return false;
   }
 
@@ -331,21 +357,282 @@ async function syncUserProfile(user) {
 
 /**
  * =========================================
+ * PHONE NUMBER
+ * =========================================
+ */
+
+function setPhoneMessage(text, type = "") {
+  if (!phoneMessage) {
+    return;
+  }
+
+  phoneMessage.textContent = text;
+
+  phoneMessage.classList.remove("success", "error");
+
+  if (type) {
+    phoneMessage.classList.add(type);
+  }
+}
+
+/**
+ * Only digits are stored after the
+ * selected country calling code.
+ */
+
+function cleanPhoneNumber(value) {
+  return value.replace(/\D/g, "");
+}
+
+/**
+ * Split an existing phone number
+ * back into country code + number
+ * for editing.
+ */
+
+function splitPhoneNumber(phone) {
+  const supportedCodes = ["+971", "+91", "+44", "+61", "+65", "+1"];
+
+  for (const code of supportedCodes) {
+    if (phone.startsWith(code)) {
+      return {
+        countryCode: code,
+        number: phone.slice(code.length),
+      };
+    }
+  }
+
+  return {
+    countryCode: "+91",
+    number: phone.replace(/^\+/, ""),
+  };
+}
+
+/**
+ * Display phone editor.
+ */
+
+function showPhoneEditor() {
+  if (!phoneEditor) {
+    return;
+  }
+
+  setPhoneMessage("");
+
+  if (currentPhone) {
+    const parts = splitPhoneNumber(currentPhone);
+
+    phoneCountryCode.value = parts.countryCode;
+
+    phoneNumber.value = parts.number;
+  } else {
+    phoneCountryCode.value = "+91";
+
+    phoneNumber.value = "";
+  }
+
+  phoneEditor.hidden = false;
+
+  phoneNumber.focus();
+}
+
+/**
+ * Hide phone editor.
+ */
+
+function hidePhoneEditor() {
+  if (!phoneEditor) {
+    return;
+  }
+
+  phoneEditor.hidden = true;
+
+  setPhoneMessage("");
+}
+
+/**
+ * Load the user's phone number
+ * from public.profiles.
+ */
+
+async function loadPhoneNumber(user) {
+  if (!client || !user) {
+    return;
+  }
+
+  const { data, error } = await client
+    .from("profiles")
+    .select("phone")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (error) {
+    console.error("Phone load error:", error);
+
+    if (accountPhone) {
+      accountPhone.textContent = "Not available";
+    }
+
+    return;
+  }
+
+  currentPhone = data?.phone || null;
+
+  if (accountPhone) {
+    accountPhone.textContent = currentPhone || "Not added";
+  }
+
+  if (editPhoneButton) {
+    editPhoneButton.textContent = currentPhone ? "Edit" : "Add phone number";
+  }
+}
+
+/**
+ * Save phone number.
+ */
+
+async function savePhoneNumber() {
+  if (!client || !currentUser) {
+    setPhoneMessage(
+      "Your account could not be loaded. Please refresh the page.",
+      "error",
+    );
+
+    return;
+  }
+
+  const nationalNumber = cleanPhoneNumber(phoneNumber.value);
+
+  /**
+   * Basic validation.
+   */
+
+  if (nationalNumber.length < 7 || nationalNumber.length > 15) {
+    setPhoneMessage("Enter a valid phone number.", "error");
+
+    phoneNumber.focus();
+
+    return;
+  }
+
+  const fullPhoneNumber = `${phoneCountryCode.value}${nationalNumber}`;
+
+  savePhoneButton.disabled = true;
+
+  savePhoneButton.textContent = "Saving...";
+
+  setPhoneMessage("");
+
+  const { error } = await client
+    .from("profiles")
+    .update({
+      phone: fullPhoneNumber,
+
+      updated_at: new Date().toISOString(),
+    })
+    .eq("id", currentUser.id);
+
+  if (error) {
+    console.error("Phone save error:", error);
+
+    setPhoneMessage(
+      error.message || "Phone number could not be saved.",
+      "error",
+    );
+
+    savePhoneButton.disabled = false;
+
+    savePhoneButton.textContent = "Save phone number";
+
+    return;
+  }
+
+  currentPhone = fullPhoneNumber;
+
+  accountPhone.textContent = currentPhone;
+
+  editPhoneButton.textContent = "Edit";
+
+  setPhoneMessage("Phone number saved.", "success");
+
+  savePhoneButton.disabled = false;
+
+  savePhoneButton.textContent = "Save phone number";
+
+  /**
+   * Keep the success message visible
+   * briefly before closing.
+   */
+
+  setTimeout(() => {
+    hidePhoneEditor();
+  }, 700);
+}
+
+/**
+ * =========================================
+ * PHONE EVENTS
+ * =========================================
+ */
+
+if (editPhoneButton) {
+  editPhoneButton.addEventListener("click", () => {
+    showPhoneEditor();
+  });
+}
+
+if (cancelPhoneButton) {
+  cancelPhoneButton.addEventListener("click", () => {
+    hidePhoneEditor();
+  });
+}
+
+if (savePhoneButton) {
+  savePhoneButton.addEventListener("click", async () => {
+    await savePhoneNumber();
+  });
+}
+
+if (phoneNumber) {
+  /**
+   * Remove letters/spaces from
+   * phone number input.
+   */
+
+  phoneNumber.addEventListener("input", () => {
+    phoneNumber.value = cleanPhoneNumber(phoneNumber.value);
+  });
+
+  /**
+   * Enter = Save
+   * Escape = Cancel
+   */
+
+  phoneNumber.addEventListener("keydown", async (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+
+      await savePhoneNumber();
+    }
+
+    if (event.key === "Escape") {
+      hidePhoneEditor();
+
+      editPhoneButton?.focus();
+    }
+  });
+}
+
+/**
+ * =========================================
  * DISPLAY ACCOUNT
  * =========================================
  */
 
 function displayAccount(user) {
-  const metadata = user.user_metadata || {};
+  currentUser = user;
 
-  /*
-   * Google normally supplies:
-   *
-   * full_name
-   * name
-   * avatar_url
-   * picture
-   */
+  const metadata = user.user_metadata || {};
 
   const name =
     metadata.full_name ||
@@ -410,12 +697,6 @@ function displayAccount(user) {
 
     img.className = "avatar";
 
-    /*
-     * If Google's profile picture
-     * cannot load, show the user's
-     * first initial instead.
-     */
-
     img.onerror = () => {
       avatarContainer.innerHTML = "";
 
@@ -463,6 +744,9 @@ function createFallbackAvatar(container, name) {
  */
 
 function displayLogin() {
+  currentUser = null;
+  currentPhone = null;
+
   loading.style.display = "none";
 
   accountDashboard.style.display = "none";
@@ -505,15 +789,21 @@ async function updateSession() {
   const session = data.session;
 
   if (session && session.user) {
-    /*
-     * Save the user's name/email into
-     * public.profiles whenever the
-     * account page loads.
+    /**
+     * Keep public.profiles
+     * synchronized with Auth.
      */
 
     await syncUserProfile(session.user);
 
     displayAccount(session.user);
+
+    /**
+     * Load phone after the
+     * profile exists.
+     */
+
+    await loadPhoneNumber(session.user);
   } else {
     displayLogin();
   }
@@ -546,9 +836,8 @@ logoutButton.addEventListener("click", async () => {
     return;
   }
 
-  /*
-   * Return to homepage after logout.
-   */
+  currentUser = null;
+  currentPhone = null;
 
   window.location.href = "https://aepxtech.vercel.app/";
 });
@@ -564,19 +853,24 @@ if (client) {
     console.log("Auth event:", event);
 
     if (event === "SIGNED_IN" && session?.user) {
-      /*
-       * Run profile syncing outside the
-       * immediate auth callback.
+      /**
+       * Run database operations outside
+       * the immediate auth callback.
        */
 
       setTimeout(async () => {
         await syncUserProfile(session.user);
 
         displayAccount(session.user);
+
+        await loadPhoneNumber(session.user);
       }, 0);
     }
 
     if (event === "SIGNED_OUT") {
+      currentUser = null;
+      currentPhone = null;
+
       displayLogin();
     }
   });

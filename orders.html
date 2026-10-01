@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>My Orders | AEPX TECH</title>
+
+    <link rel="stylesheet" href="./css/orders.css" />
+  </head>
+
+  <body>
+    <header class="header">
+      <div class="header-inner">
+        <a href="./index.html" class="logo"> AEPX TECH </a>
+
+        <a href="./account.html" class="account-link-header"> ← My Account </a>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="orders-container">
+        <div class="orders-heading">
+          <div>
+            <h1>My Orders</h1>
+
+            <p>View your AEPX TECH orders and their current status.</p>
+          </div>
+
+          <a href="./account.html" class="back-button"> My Account </a>
+        </div>
+
+        <!-- Loading -->
+
+        <div id="loading" class="status-box">Loading your orders...</div>
+
+        <!-- Error -->
+
+        <div id="errorBox" class="status-box error-box" hidden>
+          We couldn't load your orders.
+        </div>
+
+        <!-- No Orders -->
+
+        <div id="emptyOrders" class="empty-orders" hidden>
+          <div class="empty-icon">📦</div>
+
+          <h2>No orders yet</h2>
+
+          <p>You haven't placed any AEPX TECH orders yet.</p>
+
+          <a href="./index.html#product" class="primary-button">
+            Explore AEPX
+          </a>
+        </div>
+
+        <!-- Orders -->
+
+        <div id="ordersList" class="orders-list" hidden></div>
+
+        <div class="bottom-navigation">
+          <a href="./account.html"> ← Back to My Account </a>
+        </div>
+      </section>
+    </main>
+
+    <!-- Your existing Supabase client -->
+
+    <script type="module" src="./js/supabase.js"></script>
+
+    <!-- Orders logic -->
+
+    <script type="module" src="./js/orders.js"></script>
+  </body>
+</html>

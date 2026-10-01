@@ -150,6 +150,7 @@
           />
         </a>
 
+        <!-- Mobile menu button -->
         <button
           class="menu-btn"
           type="button"
@@ -159,6 +160,7 @@
           Menu
         </button>
 
+        <!-- Desktop navigation / Mobile menu -->
         <nav id="nav" aria-label="Main navigation">
           <ul>
             <li><a href="#home">Home</a></li>
@@ -167,13 +169,17 @@
             <li><a href="#why">Why AEPX</a></li>
             <li><a href="#team">Founders</a></li>
             <li><a href="#contact">Contact</a></li>
+
+            <!-- Supabase account link -->
+            <li>
+              <a id="accountNavLink" href="account.html">Sign In</a>
+            </li>
           </ul>
         </nav>
 
         <a class="btn nav-cta" href="#contact">Talk to our team</a>
       </div>
     </header>
-
     <main id="mainContent" tabindex="-1">
       <!-- Hero -->
       <section class="hero" id="home">
@@ -839,6 +845,71 @@
     <script src="js/assistant.js" defer></script>
     <script src="js/main.js" defer></script>
 
+    <!-- Supabase -->
     <script type="module" src="./js/supabase.js"></script>
+
+    <!-- Account navigation -->
+    <script type="module">
+      const accountNavLink = document.getElementById("accountNavLink");
+
+      async function updateAccountNav() {
+        if (!accountNavLink) {
+          return;
+        }
+
+        if (!window.aepxSupabase) {
+          console.error("AEPX Supabase client is not available.");
+          accountNavLink.textContent = "Sign In";
+          accountNavLink.href = "account.html";
+          return;
+        }
+
+        try {
+          const {
+            data: { session },
+            error,
+          } = await window.aepxSupabase.auth.getSession();
+
+          if (error) {
+            throw error;
+          }
+
+          if (session?.user) {
+            // User is logged in
+            accountNavLink.textContent = "My Account";
+            accountNavLink.href = "account.html";
+
+            console.log("AEPX user signed in:", session.user.email);
+          } else {
+            // User is logged out
+            accountNavLink.textContent = "Sign In";
+            accountNavLink.href = "account.html";
+          }
+        } catch (error) {
+          console.error("Unable to check AEPX login status:", error);
+
+          accountNavLink.textContent = "Sign In";
+          accountNavLink.href = "account.html";
+        }
+      }
+
+      // Check login status when homepage loads
+      await updateAccountNav();
+
+      // Automatically update navigation when login state changes
+      if (window.aepxSupabase) {
+        window.aepxSupabase.auth.onAuthStateChange((event, session) => {
+          console.log("AEPX auth state:", event);
+
+          if (session?.user) {
+            accountNavLink.textContent = "My Account";
+            accountNavLink.href = "account.html";
+          } else {
+            accountNavLink.textContent = "Sign In";
+            accountNavLink.href = "account.html";
+          }
+        });
+      }
+    </script>
   </body>
 </html>

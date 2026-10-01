@@ -199,6 +199,7 @@
     quickActions.appendChild(button);
   });
 
+  console.log("AEPX assistant click listener attached");
   launcher.addEventListener("click", toggleAssistant);
   closeButton.addEventListener("click", closeAssistant);
 

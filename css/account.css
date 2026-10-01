@@ -1,0 +1,564 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+
+  font-family: Inter, Arial, sans-serif;
+
+  background: #f3f6fc;
+  color: #172033;
+}
+
+/* =========================
+   HEADER
+========================== */
+
+.header {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header-inner {
+  width: 100%;
+  max-width: 1180px;
+
+  min-height: 78px;
+
+  margin: auto;
+  padding: 0 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: 800;
+
+  color: #1260ed;
+
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.home-link {
+  text-decoration: none;
+
+  color: #344054;
+
+  font-weight: 600;
+}
+
+.home-link:hover {
+  color: #1761ed;
+}
+
+/* =========================
+   PAGE
+========================== */
+
+.page {
+  width: 100%;
+  max-width: 900px;
+
+  margin: 0 auto;
+
+  padding: 55px 20px;
+}
+
+.card {
+  background: #ffffff;
+
+  border-radius: 20px;
+
+  box-shadow: 0 12px 40px rgba(21, 40, 74, 0.1);
+
+  overflow: hidden;
+}
+
+.card-content {
+  padding: 32px;
+}
+
+h1 {
+  margin: 0 0 8px;
+
+  color: #1260ed;
+
+  font-size: 30px;
+}
+
+.subtitle {
+  margin: 0 0 24px;
+
+  color: #667085;
+
+  line-height: 1.5;
+}
+
+/* =========================
+   LOGIN FORM
+========================== */
+
+label {
+  display: block;
+
+  margin: 16px 0 7px;
+
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+
+  padding: 13px 14px;
+
+  border: 1px solid #d5dbea;
+  border-radius: 9px;
+
+  font-family: inherit;
+  font-size: 16px;
+
+  outline: none;
+}
+
+input:focus {
+  border-color: #1761ed;
+
+  box-shadow: 0 0 0 3px rgba(23, 97, 237, 0.12);
+}
+
+button {
+  cursor: pointer;
+
+  border: 0;
+  border-radius: 9px;
+
+  padding: 13px 16px;
+
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 650;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================
+   GOOGLE BUTTON
+========================== */
+
+.google-button {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 10px;
+
+  margin-bottom: 20px;
+
+  background: #ffffff;
+  color: #202124;
+
+  border: 1px solid #dadce0;
+
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.google-button:hover {
+  background: #f8f9fa;
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: 800;
+}
+
+/* =========================
+   DIVIDER
+========================== */
+
+.divider {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  margin: 20px 0;
+
+  color: #98a2b3;
+
+  font-size: 13px;
+}
+
+.divider::before,
+.divider::after {
+  content: "";
+
+  height: 1px;
+  flex: 1;
+
+  background: #e4e7ec;
+}
+
+/* =========================
+   LOGIN / SIGNUP SWITCH
+========================== */
+
+.switches {
+  display: flex;
+
+  gap: 10px;
+
+  margin-bottom: 22px;
+}
+
+.switch {
+  flex: 1;
+
+  background: #edf3ff;
+  color: #1455c8;
+}
+
+.switch.active {
+  background: #1761ed;
+  color: #ffffff;
+}
+
+/* =========================
+   PRIMARY BUTTON
+========================== */
+
+.primary {
+  width: 100%;
+
+  margin-top: 20px;
+
+  background: #1761ed;
+  color: #ffffff;
+}
+
+.primary:hover {
+  background: #1255d3;
+}
+
+/* =========================
+   MESSAGES
+========================== */
+
+#message {
+  min-height: 24px;
+
+  margin-top: 18px;
+
+  overflow-wrap: anywhere;
+
+  line-height: 1.5;
+}
+
+.success {
+  color: #087443;
+}
+
+.error {
+  color: #b42318;
+}
+
+/* =========================
+   ACCOUNT DASHBOARD
+========================== */
+
+#accountDashboard {
+  display: none;
+}
+
+/* =========================
+   PROFILE
+========================== */
+
+.profile-header {
+  display: flex;
+  align-items: center;
+
+  gap: 20px;
+
+  padding-bottom: 28px;
+
+  border-bottom: 1px solid #e4e7ec;
+}
+
+.avatar {
+  width: 82px;
+  height: 82px;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+
+  background: #edf3ff;
+
+  border: 3px solid #dbe7ff;
+}
+
+.avatar-fallback {
+  width: 82px;
+  height: 82px;
+
+  border-radius: 50%;
+
+  background: #1761ed;
+  color: #ffffff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 30px;
+  font-weight: 800;
+}
+
+.profile-info h2 {
+  margin: 0 0 6px;
+
+  font-size: 24px;
+
+  color: #172033;
+}
+
+.profile-email {
+  margin: 0;
+
+  color: #667085;
+}
+
+.verified {
+  display: inline-block;
+
+  margin-top: 8px;
+
+  padding: 5px 9px;
+
+  border-radius: 100px;
+
+  background: #ecfdf3;
+  color: #087443;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =========================
+   ACCOUNT SECTIONS
+========================== */
+
+.account-section {
+  padding: 28px 0;
+
+  border-bottom: 1px solid #e4e7ec;
+}
+
+.account-section:last-child {
+  border-bottom: 0;
+}
+
+.account-section h3 {
+  margin: 0 0 16px;
+
+  font-size: 18px;
+}
+
+.detail-row {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 12px 0;
+}
+
+.detail-label {
+  color: #667085;
+}
+
+.detail-value {
+  font-weight: 600;
+
+  text-align: right;
+
+  overflow-wrap: anywhere;
+}
+
+/* =========================
+   AEPX ACCOUNT LINKS
+========================== */
+
+.account-links {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 12px;
+}
+
+.account-link {
+  padding: 18px;
+
+  border: 1px solid #e4e7ec;
+  border-radius: 12px;
+
+  text-decoration: none;
+
+  color: #172033;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.account-link:hover {
+  border-color: #1761ed;
+
+  transform: translateY(-2px);
+
+  box-shadow: 0 6px 18px rgba(23, 97, 237, 0.08);
+}
+
+.account-link strong {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #1455c8;
+}
+
+.account-link span {
+  font-size: 13px;
+
+  color: #667085;
+
+  line-height: 1.4;
+}
+
+/* =========================
+   LOGOUT
+========================== */
+
+.logout-button {
+  width: 100%;
+
+  background: #fff1f0;
+  color: #b42318;
+
+  border: 1px solid #fecdca;
+}
+
+.logout-button:hover {
+  background: #fee4e2;
+}
+
+/* =========================
+   BACK LINK
+========================== */
+
+.back {
+  display: inline-block;
+
+  margin-top: 20px;
+
+  color: #1455c8;
+
+  text-decoration: none;
+}
+
+.back:hover {
+  text-decoration: underline;
+}
+
+/* =========================
+   LOADING
+========================== */
+
+#loading {
+  padding: 50px 20px;
+
+  text-align: center;
+
+  color: #667085;
+}
+
+/* =========================
+   MOBILE
+========================== */
+
+@media (max-width: 650px) {
+  .header-inner {
+    min-height: 68px;
+
+    padding: 0 16px;
+  }
+
+  .logo {
+    font-size: 20px;
+  }
+
+  .home-link {
+    font-size: 14px;
+  }
+
+  .page {
+    padding: 25px 14px;
+  }
+
+  .card {
+    border-radius: 16px;
+  }
+
+  .card-content {
+    padding: 24px 20px;
+  }
+
+  h1 {
+    font-size: 27px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+
+    text-align: center;
+  }
+
+  .account-links {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-row {
+    flex-direction: column;
+
+    gap: 4px;
+  }
+
+  .detail-value {
+    text-align: left;
+  }
+}

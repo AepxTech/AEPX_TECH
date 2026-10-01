@@ -2,72 +2,137 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
     />
 
     <title>AEPX TECH | Smart Water Monitoring Solutions</title>
-
     <meta
       name="description"
       content="AEPX TECH builds practical smart water monitoring solutions with live readings, clear dashboards, and early alerts."
     />
-
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#102a56" />
 
-    <!-- Replace yourdomain.com with your real deployed domain -->
-    <link rel="canonical" href="https://yourdomain.com/" />
+    <!-- Replace yourdomain.com with your real domain when you purchase one -->
+    <link rel="canonical" href="https://atharva16bit.github.io/AEPX_TECH/" />
 
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="AEPX TECH" />
-    <meta property="og:url" content="https://yourdomain.com/" />
-
-    <meta
-      property="og:title"
-      content="AEPX TECH | Smart Water Monitoring Solutions"
+    <!-- Favicons -->
+    <link
+      rel="icon"
+      href="assets/aepx-favicon-and-web-assets/favicon.ico"
+      sizes="any"
     />
-
-    <meta
-      property="og:description"
-      content="Live water monitoring, clear dashboards, and early alerts for better decisions."
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="48x48"
+      href="assets/aepx-favicon-and-web-assets/favicon-48x48.png"
     />
-
-    <meta
-      property="og:image"
-      content="https://yourdomain.com/assets/images/aepx-social-preview.jpg"
-    />
-
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-
-    <meta name="twitter:card" content="summary_large_image" />
-
-    <meta
-      name="twitter:image"
-      content="https://yourdomain.com/assets/images/aepx-social-preview.jpg"
-    />
-
-    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
-
     <link
       rel="icon"
       type="image/png"
       sizes="32x32"
-      href="assets/icons/favicon-32.png"
+      href="assets/aepx-favicon-and-web-assets/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/aepx-favicon-and-web-assets/favicon-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/aepx-favicon-and-web-assets/apple-touch-icon.png"
+    />
+    <link rel="manifest" href="assets/favicon_io/site.webmanifest" />
+    <meta name="apple-mobile-web-app-title" content="AEPX TECH" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AEPX TECH" />
+    <meta property="og:locale" content="en_US" />
+    <meta
+      property="og:url"
+      content="https://atharva16bit.github.io/AEPX_TECH/"
+    />
+    <meta
+      property="og:title"
+      content="AEPX TECH | Smart Water Monitoring Solutions"
+    />
+    <meta
+      property="og:description"
+      content="Live water monitoring, clear dashboards, and early alerts for better decisions."
+    />
+    <meta
+      property="og:image"
+      content="https://atharva16bit.github.io/AEPX_TECH/Assets/aepx-logo.png"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta
+      property="og:image:alt"
+      content="AEPX TECH logo - Ideas, Technology, Impact"
     />
 
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="AEPX TECH | Smart Water Monitoring Solutions"
+    />
+    <meta
+      name="twitter:description"
+      content="Live water monitoring, clear dashboards, and early alerts for better decisions."
+    />
+    <meta
+      name="twitter:image"
+      content="https://atharva16bit.github.io/AEPX_TECH/Assets/aepx-logo.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="AEPX TECH logo - Ideas, Technology, Impact"
+    />
+
+    <!-- Preload the logo shown in the header -->
+    <link
+      rel="preload"
+      as="image"
+      href="Assets/aepx-favicon-and-web-assets/logo-full.png"
+      type="image/png"
+    />
+
+    <!-- CSS -->
     <link rel="stylesheet" href="style.css" />
 
+    <!-- Structured data -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "AEPX TECH",
-        "description": "Smart water monitoring solutions",
-        "url": "https://yourdomain.com/"
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://atharva16bit.github.io/AEPX_TECH/#organization",
+            "name": "AEPX TECH",
+            "description": "Smart water monitoring solutions",
+            "slogan": "Ideas | Technology | Impact",
+            "url": "https://atharva16bit.github.io/AEPX_TECH/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://atharva16bit.github.io/AEPX_TECH/Assets/aepx-logo.png"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://atharva16bit.github.io/AEPX_TECH/#website",
+            "url": "https://atharva16bit.github.io/AEPX_TECH/",
+            "name": "AEPX TECH",
+            "publisher": {
+              "@id": "https://atharva16bit.github.io/AEPX_TECH/#organization"
+            }
+          }
+        ]
       }
     </script>
   </head>
@@ -78,8 +143,10 @@
     <!-- Header -->
     <header class="site-header">
       <div class="wrap bar">
+        <!-- Logo added beside AEPX TECH -->
         <a class="logo" href="#home" aria-label="AEPX TECH home">
-          AEPX <span>TECH</span>
+          <img src="/assets/images/logo-mark-h48.png" alt="" height="40" />
+          <span class="brand-name">AEPX TECH</span>
         </a>
 
         <button
@@ -102,7 +169,7 @@
           </ul>
         </nav>
 
-        <a class="btn nav-cta" href="#contact"> Talk to our team </a>
+        <a class="btn nav-cta" href="#contact">Talk to our team</a>
       </div>
     </header>
 
@@ -125,9 +192,8 @@
             </p>
 
             <div class="actions">
-              <a class="btn" href="#contact"> Talk to our team </a>
-
-              <a class="btn ghost" href="#product"> Explore the product </a>
+              <a class="btn" href="#contact">Talk to our team</a>
+              <a class="btn ghost" href="#product">Explore the product</a>
             </div>
 
             <ul class="pillars">
@@ -192,9 +258,7 @@
           <div class="grid three">
             <article class="card">
               <span class="tag">01 · Sense</span>
-
               <h3>Sensor nodes</h3>
-
               <p>
                 Devices collect readings from the locations that matter to your
                 operation.
@@ -209,9 +273,7 @@
 
             <article class="card pop">
               <span class="tag">02 · Understand</span>
-
               <h3>Live dashboard</h3>
-
               <p>
                 View the current situation and review previous readings through
                 one clear interface.
@@ -223,14 +285,12 @@
                 <li>Accessible from connected devices</li>
               </ul>
 
-              <a class="btn small" href="#contact"> See it in action </a>
+              <a class="btn small" href="#contact">See it in action</a>
             </article>
 
             <article class="card">
               <span class="tag">03 · Respond</span>
-
               <h3>Early alerts</h3>
-
               <p>
                 Receive notifications when readings move outside the conditions
                 you want to monitor.
@@ -308,9 +368,7 @@
           <div class="grid three">
             <article class="card">
               <span class="feature-number">01</span>
-
               <h3>Clear information</h3>
-
               <p>
                 See the readings and alerts that matter without sorting through
                 unnecessary complexity.
@@ -319,9 +377,7 @@
 
             <article class="card">
               <span class="feature-number">02</span>
-
               <h3>Practical monitoring</h3>
-
               <p>
                 Build a monitoring setup around your actual environment,
                 workflow, and priorities.
@@ -330,9 +386,7 @@
 
             <article class="card">
               <span class="feature-number">03</span>
-
               <h3>Founder-led support</h3>
-
               <p>
                 Communicate directly with the people designing and building the
                 product.
@@ -348,7 +402,6 @@
           <div class="founders-heading">
             <div>
               <p class="kicker">The people behind AEPX TECH</p>
-
               <h2 id="h-team">
                 Built by a team that cares about solving real problems
               </h2>
@@ -379,7 +432,6 @@
           <div class="founders-names" aria-label="AEPX TECH founders">
             <article class="founder-name">
               <span class="founder-index">01</span>
-
               <div>
                 <h3>Atharva Patankar</h3>
                 <p>Co-Founder</p>
@@ -388,7 +440,6 @@
 
             <article class="founder-name">
               <span class="founder-index">02</span>
-
               <div>
                 <h3>Aarna Parihar</h3>
                 <p>Co-Founder</p>
@@ -397,7 +448,6 @@
 
             <article class="founder-name">
               <span class="founder-index">03</span>
-
               <div>
                 <h3>Ekjyot Singh</h3>
                 <p>Co-Founder</p>
@@ -406,7 +456,6 @@
 
             <article class="founder-name">
               <span class="founder-index">04</span>
-
               <div>
                 <h3>Parth Singh</h3>
                 <p>Co-Founder</p>
@@ -420,12 +469,10 @@
       <section id="faq" class="faq-section" aria-labelledby="h-faq">
         <div class="wrap narrow">
           <p class="kicker">Need to know more?</p>
-
           <h2 id="h-faq">Questions about AEPX TECH</h2>
 
           <details>
             <summary>What does AEPX TECH monitor?</summary>
-
             <p>
               The system is designed to monitor selected water-related readings
               according to the requirements of each installation.
@@ -434,7 +481,6 @@
 
           <details>
             <summary>Who can use the system?</summary>
-
             <p>
               The solution can support housing societies, institutions,
               industrial sites, agricultural operations, and other environments
@@ -444,7 +490,6 @@
 
           <details>
             <summary>How can I contact the team?</summary>
-
             <p>
               Complete the contact form below and describe what you want to
               monitor. Our team will review your requirements and respond by
@@ -458,15 +503,12 @@
       <section class="cta-band" aria-labelledby="h-cta">
         <div class="wrap">
           <p class="kicker">Start with clarity</p>
-
           <h2 id="h-cta">Let’s build a better way to monitor your water</h2>
-
           <p>
             Tell us about your setup, your requirements, and the readings you
             want to understand.
           </p>
-
-          <a class="btn" href="#contact"> Talk to our team </a>
+          <a class="btn" href="#contact">Talk to our team</a>
         </div>
       </section>
 
@@ -475,7 +517,6 @@
         <div class="wrap two">
           <div>
             <p class="kicker">Contact</p>
-
             <h2 id="h-contact">Let’s talk about your monitoring needs</h2>
 
             <p class="sub">
@@ -486,9 +527,7 @@
             <div class="contact-details">
               <div>
                 <span class="contact-label">Email</span>
-
-                <!-- Replace if this is not your real email -->
-                <a href="mailto:hello@aepxtech.com"> aepxtech@gmail.com </a>
+                <a href="mailto:aepxtech@gmail.com">aepxtech@gmail.com</a>
               </div>
 
               <div>
@@ -519,7 +558,6 @@
 
             <div class="field">
               <label for="n">Name</label>
-
               <input
                 id="n"
                 name="name"
@@ -529,13 +567,11 @@
                 required
                 aria-describedby="n-e"
               />
-
               <p class="err" id="n-e" role="alert"></p>
             </div>
 
             <div class="field">
               <label for="e">Email</label>
-
               <input
                 id="e"
                 name="email"
@@ -545,13 +581,11 @@
                 required
                 aria-describedby="e-e"
               />
-
               <p class="err" id="e-e" role="alert"></p>
             </div>
 
             <div class="field">
               <label for="s">Sector</label>
-
               <select id="s" name="sector">
                 <option value="">Select a sector</option>
                 <option value="housing-society">Housing society</option>
@@ -564,7 +598,6 @@
 
             <div class="field">
               <label for="m">What do you need to monitor?</label>
-
               <textarea
                 id="m"
                 name="message"
@@ -573,14 +606,11 @@
                 aria-describedby="m-e"
                 placeholder="Tell us about your setup and monitoring requirements."
               ></textarea>
-
               <p class="err" id="m-e" role="alert"></p>
             </div>
 
-            <!-- Honeypot field for simple bot detection -->
             <div class="hp" aria-hidden="true">
               <label for="w">Leave this field empty</label>
-
               <input
                 id="w"
                 name="website"
@@ -603,10 +633,18 @@
 
     <!-- Footer -->
     <footer class="site-footer">
-      <div class="wrap cols">
-        <div>
-          <a class="logo" href="#home" aria-label="AEPX TECH home">
-            AEPX <span>TECH</span>
+      <div class="wrap footer-grid">
+        <div class="footer-brand">
+          <a class="footer-logo" href="#home" aria-label="AEPX TECH home">
+            <img
+              src="Assets/aepx-favicon-and-web-assets/logo-mark-h48.png"
+              alt="AEPX TECH logo"
+              width="52"
+              height="52"
+              loading="lazy"
+              decoding="async"
+            />
+            <span>AEPX TECH</span>
           </a>
 
           <p>
@@ -615,9 +653,8 @@
           </p>
         </div>
 
-        <div>
+        <div class="footer-column">
           <h2>Explore</h2>
-
           <ul>
             <li><a href="#product">Product</a></li>
             <li><a href="#solutions">Solutions</a></li>
@@ -626,21 +663,17 @@
           </ul>
         </div>
 
-        <div>
+        <div class="footer-column">
           <h2>Get started</h2>
-
           <ul>
             <li><a href="#contact">Talk to our team</a></li>
             <li><a href="#faq">Questions</a></li>
-            <li>
-              <a href="mailto:aepxtech@gmail.com">Email us</a>
-            </li>
+            <li><a href="mailto:aepxtech@gmail.com">Email us</a></li>
           </ul>
         </div>
 
-        <div>
+        <div class="footer-column">
           <h2>Legal</h2>
-
           <ul>
             <li><a href="privacy.html">Privacy policy</a></li>
             <li><a href="terms.html">Terms</a></li>
@@ -648,7 +681,7 @@
         </div>
       </div>
 
-      <div class="wrap legal">
+      <div class="wrap footer-bottom">
         <p>
           <a href="privacy.html">Privacy policy</a>
           <span aria-hidden="true"> · </span>

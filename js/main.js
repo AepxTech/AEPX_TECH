@@ -254,48 +254,48 @@ document.addEventListener("DOMContentLoaded", () => {
     updateSoundButton();
   }
 
-  /* =========================================================
-     Website assistant
-  ========================================================= */
+  // /* =========================================================
+  //    Website assistant
+  // ========================================================= */
 
-  const assistantLauncher = document.querySelector("#assistantLauncher");
-  const assistantPanel = document.querySelector("#assistantPanel");
-  const assistantClose = document.querySelector("#assistantClose");
+  // const assistantLauncher = document.querySelector("#assistantLauncher");
+  // const assistantPanel = document.querySelector("#assistantPanel");
+  // const assistantClose = document.querySelector("#assistantClose");
 
-  const openAssistant = () => {
-    if (!assistantLauncher || !assistantPanel) return;
+  // const openAssistant = () => {
+  //   if (!assistantLauncher || !assistantPanel) return;
 
-    assistantPanel.hidden = false;
-    assistantLauncher.setAttribute("aria-expanded", "true");
+  //   assistantPanel.hidden = false;
+  //   assistantLauncher.setAttribute("aria-expanded", "true");
 
-    const assistantInput = assistantPanel.querySelector("#assistantInput");
+  //   const assistantInput = assistantPanel.querySelector("#assistantInput");
 
-    if (assistantInput) {
-      assistantInput.focus();
-    }
-  };
+  //   if (assistantInput) {
+  //     assistantInput.focus();
+  //   }
+  // };
 
-  const closeAssistant = () => {
-    if (!assistantLauncher || !assistantPanel) return;
+  // const closeAssistant = () => {
+  //   if (!assistantLauncher || !assistantPanel) return;
 
-    assistantPanel.hidden = true;
-    assistantLauncher.setAttribute("aria-expanded", "false");
-    assistantLauncher.focus();
-  };
+  //   assistantPanel.hidden = true;
+  //   assistantLauncher.setAttribute("aria-expanded", "false");
+  //   assistantLauncher.focus();
+  // };
 
-  if (assistantLauncher && assistantPanel) {
-    assistantLauncher.addEventListener("click", () => {
-      if (assistantPanel.hidden) {
-        openAssistant();
-      } else {
-        closeAssistant();
-      }
-    });
+  // if (assistantLauncher && assistantPanel) {
+  //   assistantLauncher.addEventListener("click", () => {
+  //     if (assistantPanel.hidden) {
+  //       openAssistant();
+  //     } else {
+  //       closeAssistant();
+  //     }
+  //   });
 
-    if (assistantClose) {
-      assistantClose.addEventListener("click", closeAssistant);
-    }
-  }
+  //   if (assistantClose) {
+  //     assistantClose.addEventListener("click", closeAssistant);
+  //   }
+  // }
 
   /* =========================================================
      Escape key for video, assistant, and menu
@@ -309,10 +309,10 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    if (assistantPanel && !assistantPanel.hidden) {
-      closeAssistant();
-      return;
-    }
+    // if (assistantPanel && !assistantPanel.hidden) {
+    //   closeAssistant();
+    //   return;
+    // }
 
     if (navigation && navigation.classList.contains("open")) {
       closeMenu();

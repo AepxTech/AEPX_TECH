@@ -1,6 +1,10 @@
 (function () {
   "use strict";
 
+  /* -----------------------------
+     Mobile navigation
+  ------------------------------ */
+
   var menuButton = document.querySelector(".menu-btn");
   var navigation = document.querySelector("#nav");
 
@@ -23,6 +27,10 @@
     });
   }
 
+  /* -----------------------------
+     Formspree contact form
+  ------------------------------ */
+
   var form = document.querySelector("#leadForm");
 
   if (!form) {
@@ -30,23 +38,20 @@
   }
 
   function setError(id, message) {
-    var error = document.querySelector("#" + id + "-e");
+    var errorElement = document.querySelector("#" + id + "-e");
 
-    if (error) {
-      error.textContent = message;
+    if (errorElement) {
+      errorElement.textContent = message;
     }
 
     return message === "";
   }
 
   form.addEventListener("submit", function (event) {
-    event.preventDefault();
-
     var nameInput = document.querySelector("#n");
     var emailInput = document.querySelector("#e");
     var messageInput = document.querySelector("#m");
-    var honeypot = document.querySelector("#w");
-    var successMessage = document.querySelector("#ok");
+    var honeypotInput = document.querySelector("#w");
 
     var valid = true;
 
@@ -72,7 +77,13 @@
           : "Please tell us what you want to monitor.",
       ) && valid;
 
+    /*
+      Invalid form:
+      Stop submission and focus the first invalid field.
+    */
     if (!valid) {
+      event.preventDefault();
+
       var firstError = form.querySelector(".err:not(:empty)");
 
       if (firstError && firstError.previousElementSibling) {
@@ -82,14 +93,18 @@
       return;
     }
 
-    if (honeypot && honeypot.value) {
-      return;
+    /*
+      Honeypot:
+      Stop submissions where the hidden field was filled.
+    */
+    if (honeypotInput && honeypotInput.value.trim()) {
+      event.preventDefault();
     }
 
-    if (successMessage) {
-      successMessage.hidden = false;
-    }
-
-    form.reset();
+    /*
+      Important:
+      Do not call event.preventDefault() for valid submissions.
+      The browser must submit the form normally to Formspree.
+    */
   });
 })();

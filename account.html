@@ -3,102 +3,225 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>Account | AEPX TECH</title>
+
     <style>
       * {
         box-sizing: border-box;
       }
+
       body {
         margin: 0;
         min-height: 100vh;
         display: grid;
         place-items: center;
         padding: 20px;
-        font-family: Arial, sans-serif;
+        font-family: Inter, Arial, sans-serif;
         background: #f3f6fc;
         color: #172033;
       }
+
       .card {
         width: 100%;
-        max-width: 420px;
-        padding: 30px;
-        background: white;
-        border-radius: 18px;
-        box-shadow: 0 12px 40px #15284a18;
+        max-width: 440px;
+        padding: 32px;
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 12px 40px rgba(21, 40, 74, 0.1);
       }
+
       h1 {
         margin: 0 0 8px;
         color: #1260ed;
+        font-size: 30px;
       }
-      p {
-        line-height: 1.5;
+
+      .subtitle {
+        margin: 0 0 24px;
         color: #667085;
+        line-height: 1.5;
       }
+
       label {
         display: block;
         margin: 16px 0 7px;
         font-weight: 600;
       }
+
       input {
         width: 100%;
-        padding: 12px;
+        padding: 13px 14px;
         border: 1px solid #d5dbea;
         border-radius: 9px;
         font-size: 16px;
+        outline: none;
       }
+
+      input:focus {
+        border-color: #1761ed;
+        box-shadow: 0 0 0 3px rgba(23, 97, 237, 0.12);
+      }
+
       button {
         cursor: pointer;
         border: 0;
         border-radius: 9px;
-        padding: 12px 16px;
+        padding: 13px 16px;
         font-size: 15px;
-        font-weight: 600;
+        font-weight: 650;
       }
+
+      button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .google-button {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        background: #ffffff;
+        color: #202124;
+        border: 1px solid #dadce0;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .google-button:hover {
+        background: #f8f9fa;
+        border-color: #c7c9cc;
+      }
+
+      .google-icon {
+        width: 20px;
+        height: 20px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+      }
+
+      .divider {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 20px 0;
+        color: #98a2b3;
+        font-size: 13px;
+      }
+
+      .divider::before,
+      .divider::after {
+        content: "";
+        height: 1px;
+        flex: 1;
+        background: #e4e7ec;
+      }
+
       .primary {
         width: 100%;
         margin-top: 20px;
         background: #1761ed;
-        color: white;
+        color: #ffffff;
       }
+
+      .primary:hover {
+        background: #1255d3;
+      }
+
+      .switches {
+        display: flex;
+        gap: 10px;
+        margin: 0 0 22px;
+      }
+
       .switch {
         background: #edf3ff;
         color: #1455c8;
       }
-      .switches {
-        display: flex;
-        gap: 10px;
-        margin: 22px 0;
-      }
+
       .switches button {
         flex: 1;
       }
+
       #message {
+        min-height: 24px;
+        margin-top: 18px;
         overflow-wrap: anywhere;
+        line-height: 1.5;
       }
-      a {
-        color: #1455c8;
+
+      .success {
+        color: #087443;
       }
+
+      .error {
+        color: #b42318;
+      }
+
+      .logout {
+        width: 100%;
+        margin-top: 10px;
+      }
+
       .back {
         display: inline-block;
-        margin-top: 18px;
+        margin-top: 20px;
+        color: #1455c8;
+        text-decoration: none;
+      }
+
+      .back:hover {
+        text-decoration: underline;
+      }
+
+      .signed-in {
+        padding: 14px;
+        margin-bottom: 18px;
+        background: #ecfdf3;
+        border: 1px solid #abefc6;
+        border-radius: 10px;
+        color: #087443;
+        line-height: 1.5;
       }
     </style>
   </head>
+
   <body>
     <main class="card">
       <h1>AEPX TECH</h1>
-      <p id="intro">Sign in to access your account, addresses and orders.</p>
 
+      <p class="subtitle" id="intro">
+        Sign in to access your AEPX TECH account.
+      </p>
+
+      <!-- Google Login -->
+      <button class="google-button" id="googleButton" type="button">
+        <span class="google-icon" aria-hidden="true">G</span>
+        <span>Continue with Google</span>
+      </button>
+
+      <div class="divider">
+        <span>or continue with email</span>
+      </div>
+
+      <!-- Login / Signup -->
       <div class="switches">
         <button class="switch" id="loginTab" type="button">Log in</button>
+
         <button class="switch" id="signupTab" type="button">Sign up</button>
       </div>
 
       <form id="accountForm">
         <label for="email">Email address</label>
+
         <input id="email" type="email" autocomplete="email" required />
 
         <label for="password">Password</label>
+
         <input
           id="password"
           type="password"
@@ -108,7 +231,8 @@
         />
 
         <div id="confirmWrap" hidden>
-          <label for="confirmPassword">Confirm password</label>
+          <label for="confirmPassword"> Confirm password </label>
+
           <input
             id="confirmPassword"
             type="password"
@@ -120,14 +244,19 @@
         <button class="primary" id="submitButton" type="submit">Log in</button>
       </form>
 
-      <p id="message" role="status" aria-live="polite"></p>
-      <button id="logoutButton" class="switch" type="button" hidden>
+      <div id="message" role="status" aria-live="polite"></div>
+
+      <button id="logoutButton" class="switch logout" type="button" hidden>
         Log out
       </button>
-      <p><a class="back" href="./index.html">← Back to store</a></p>
+
+      <a class="back" href="./index.html"> ← Back to AEPX TECH </a>
     </main>
 
+    <!-- Supabase client -->
     <script type="module" src="./js/supabase.js"></script>
+
+    <!-- Authentication -->
     <script type="module">
       const client = window.aepxSupabase;
 
@@ -135,54 +264,149 @@
       const email = document.getElementById("email");
       const password = document.getElementById("password");
       const confirmPassword = document.getElementById("confirmPassword");
+
       const confirmWrap = document.getElementById("confirmWrap");
+
       const submitButton = document.getElementById("submitButton");
+
+      const googleButton = document.getElementById("googleButton");
+
       const message = document.getElementById("message");
+
       const intro = document.getElementById("intro");
+
       const logoutButton = document.getElementById("logoutButton");
+
+      const loginTab = document.getElementById("loginTab");
+
+      const signupTab = document.getElementById("signupTab");
 
       let mode = "login";
 
-      function setMessage(text) {
+      /*
+       * -------------------------------------------------------
+       * Message helper
+       * -------------------------------------------------------
+       */
+
+      function setMessage(text, type = "") {
         message.textContent = text;
+
+        message.classList.remove("success", "error");
+
+        if (type) {
+          message.classList.add(type);
+        }
       }
+
+      /*
+       * -------------------------------------------------------
+       * Login / Signup mode
+       * -------------------------------------------------------
+       */
 
       function setMode(nextMode) {
         mode = nextMode;
+
         const signup = mode === "signup";
+
         confirmWrap.hidden = !signup;
         confirmPassword.required = signup;
+
         submitButton.textContent = signup ? "Create account" : "Log in";
+
         password.autocomplete = signup ? "new-password" : "current-password";
+
         intro.textContent = signup
-          ? "Create an account to manage your addresses and orders."
-          : "Sign in to access your account, addresses and orders.";
+          ? "Create an AEPX TECH account using your email."
+          : "Sign in to access your AEPX TECH account.";
+
         setMessage("");
       }
 
-      document
-        .getElementById("loginTab")
-        .addEventListener("click", () => setMode("login"));
-      document
-        .getElementById("signupTab")
-        .addEventListener("click", () => setMode("signup"));
+      loginTab.addEventListener("click", () => {
+        setMode("login");
+      });
+
+      signupTab.addEventListener("click", () => {
+        setMode("signup");
+      });
+
+      /*
+       * -------------------------------------------------------
+       * GOOGLE LOGIN
+       * -------------------------------------------------------
+       */
+
+      googleButton.addEventListener("click", async () => {
+        if (!client) {
+          setMessage(
+            "Supabase did not load. Refresh the page and try again.",
+            "error",
+          );
+          return;
+        }
+
+        googleButton.disabled = true;
+
+        setMessage("Connecting to Google...");
+
+        try {
+          const redirectUrl = window.location.origin + "/account.html";
+
+          const { data, error } = await client.auth.signInWithOAuth({
+            provider: "google",
+
+            options: {
+              redirectTo: redirectUrl,
+            },
+          });
+
+          if (error) {
+            throw error;
+          }
+
+          console.log("Google OAuth started:", data);
+        } catch (error) {
+          console.error("Google login error:", error);
+
+          setMessage(
+            error.message || "Google login could not be started.",
+            "error",
+          );
+
+          googleButton.disabled = false;
+        }
+      });
+
+      /*
+       * -------------------------------------------------------
+       * EMAIL LOGIN / SIGNUP
+       * -------------------------------------------------------
+       */
 
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
+
         if (!client) {
-          setMessage("Supabase did not load. Refresh and try again.");
+          setMessage(
+            "Supabase did not load. Refresh the page and try again.",
+            "error",
+          );
           return;
         }
 
         const userEmail = email.value.trim();
+
         const userPassword = password.value;
 
         if (mode === "signup" && userPassword !== confirmPassword.value) {
-          setMessage("Passwords do not match.");
+          setMessage("Passwords do not match.", "error");
           return;
         }
 
         submitButton.disabled = true;
+
         setMessage("Please wait...");
 
         try {
@@ -190,63 +414,161 @@
             const { data, error } = await client.auth.signUp({
               email: userEmail,
               password: userPassword,
-              options: { emailRedirectTo: window.location.origin },
-            });
-            if (error) throw error;
 
-            setMessage(
-              data.session
-                ? "Account created! You are signed in."
-                : "Account created if permitted. Check your email for a confirmation link.",
-            );
+              options: {
+                emailRedirectTo: window.location.origin + "/account.html",
+              },
+            });
+
+            if (error) {
+              throw error;
+            }
+
+            if (data.session) {
+              setMessage("Account created! You are signed in.", "success");
+            } else {
+              setMessage(
+                "Account created. Check your email to confirm your account.",
+                "success",
+              );
+            }
           } else {
             const { error } = await client.auth.signInWithPassword({
               email: userEmail,
               password: userPassword,
             });
-            if (error) throw error;
-            setMessage("Login successful!");
+
+            if (error) {
+              throw error;
+            }
+
+            setMessage("Login successful!", "success");
           }
         } catch (error) {
-          setMessage(error.message || "Something went wrong.");
+          console.error("Authentication error:", error);
+
+          setMessage(error.message || "Something went wrong.", "error");
         } finally {
           submitButton.disabled = false;
+
           await updateSession();
         }
       });
 
+      /*
+       * -------------------------------------------------------
+       * SESSION CHECK
+       * -------------------------------------------------------
+       */
+
       async function updateSession() {
         if (!client) {
-          setMessage("Supabase did not load. Check the browser console.");
-          return;
-        }
-        const { data, error } = await client.auth.getSession();
-        if (error) {
-          setMessage(error.message);
+          setMessage("Supabase client is missing.", "error");
           return;
         }
 
-        const signedIn = !!data.session;
+        const { data, error } = await client.auth.getSession();
+
+        if (error) {
+          console.error("Session error:", error);
+
+          setMessage(error.message, "error");
+
+          return;
+        }
+
+        const session = data.session;
+
+        const signedIn = !!session;
+
         logoutButton.hidden = !signedIn;
+
+        googleButton.hidden = signedIn;
+
+        form.hidden = signedIn;
+
+        loginTab.hidden = signedIn;
+
+        signupTab.hidden = signedIn;
+
         if (signedIn) {
-          intro.textContent = "Signed in as " + data.session.user.email;
+          intro.innerHTML =
+            '<div class="signed-in">' +
+            "Signed in as <strong>" +
+            escapeHtml(session.user.email || "") +
+            "</strong>" +
+            "</div>";
+
+          setMessage("You are signed in.", "success");
+        } else {
+          intro.textContent =
+            mode === "signup"
+              ? "Create an AEPX TECH account using your email."
+              : "Sign in to access your AEPX TECH account.";
         }
       }
 
+      /*
+       * -------------------------------------------------------
+       * LOGOUT
+       * -------------------------------------------------------
+       */
+
       logoutButton.addEventListener("click", async () => {
+        if (!client) return;
+
+        logoutButton.disabled = true;
+
         const { error } = await client.auth.signOut();
-        setMessage(error ? error.message : "You have logged out.");
+
+        logoutButton.disabled = false;
+
+        if (error) {
+          setMessage(error.message, "error");
+          return;
+        }
+
         setMode("login");
+
+        setMessage("You have logged out.", "success");
+
         await updateSession();
       });
 
+      /*
+       * -------------------------------------------------------
+       * AUTH STATE LISTENER
+       * -------------------------------------------------------
+       */
+
       if (client) {
-        client.auth.onAuthStateChange(() => updateSession());
+        client.auth.onAuthStateChange((event, session) => {
+          console.log("Auth event:", event);
+
+          updateSession();
+        });
+
         await updateSession();
       } else {
         setMessage(
-          "Supabase client missing. Check js/supabase.js and the Console.",
+          "Supabase client missing. Check js/supabase.js and the browser Console.",
+          "error",
         );
+      }
+
+      /*
+       * -------------------------------------------------------
+       * Basic HTML escaping
+       * -------------------------------------------------------
+       */
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
       }
     </script>
   </body>

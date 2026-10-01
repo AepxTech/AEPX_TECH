@@ -1,7 +1,9 @@
-/* =========================================
-   AEPX TECH
-   ACCOUNT PAGE
-========================================= */
+/**
+ * =========================================
+ * AEPX TECH
+ * ACCOUNT PAGE
+ * =========================================
+ */
 
 /*
  * Wait for js/supabase.js to create
@@ -24,9 +26,11 @@ async function getSupabaseClient() {
 
 const client = await getSupabaseClient();
 
-/* =========================================
-   ELEMENTS
-========================================= */
+/**
+ * =========================================
+ * ELEMENTS
+ * =========================================
+ */
 
 const loading = document.getElementById("loading");
 
@@ -60,9 +64,11 @@ const signupTab = document.getElementById("signupTab");
 
 let mode = "login";
 
-/* =========================================
-   MESSAGE
-========================================= */
+/**
+ * =========================================
+ * MESSAGE
+ * =========================================
+ */
 
 function setMessage(text, type = "") {
   message.textContent = text;
@@ -74,9 +80,11 @@ function setMessage(text, type = "") {
   }
 }
 
-/* =========================================
-   LOGIN / SIGNUP MODE
-========================================= */
+/**
+ * =========================================
+ * LOGIN / SIGNUP MODE
+ * =========================================
+ */
 
 function setMode(nextMode) {
   mode = nextMode;
@@ -110,14 +118,15 @@ signupTab.addEventListener("click", () => {
   setMode("signup");
 });
 
-/* =========================================
-   GOOGLE LOGIN
-========================================= */
+/**
+ * =========================================
+ * GOOGLE LOGIN
+ * =========================================
+ */
 
 googleButton.addEventListener("click", async () => {
   if (!client) {
     setMessage("Supabase did not load.", "error");
-
     return;
   }
 
@@ -130,13 +139,6 @@ googleButton.addEventListener("click", async () => {
       provider: "google",
 
       options: {
-        /*
-         * IMPORTANT:
-         *
-         * After Google authentication,
-         * return to the AEPX homepage.
-         */
-
         redirectTo: "https://aepxtech.vercel.app/",
       },
     });
@@ -153,16 +155,17 @@ googleButton.addEventListener("click", async () => {
   }
 });
 
-/* =========================================
-   EMAIL LOGIN / SIGNUP
-========================================= */
+/**
+ * =========================================
+ * EMAIL LOGIN / SIGNUP
+ * =========================================
+ */
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   if (!client) {
     setMessage("Supabase did not load.", "error");
-
     return;
   }
 
@@ -177,7 +180,6 @@ form.addEventListener("submit", async (event) => {
 
   if (mode === "signup" && userPassword !== confirmPassword.value) {
     setMessage("Passwords do not match.", "error");
-
     return;
   }
 
@@ -186,9 +188,11 @@ form.addEventListener("submit", async (event) => {
   setMessage("Please wait...");
 
   try {
-    /* =========================
-         SIGN UP
-      ========================== */
+    /**
+     * =========================
+     * SIGN UP
+     * =========================
+     */
 
     if (mode === "signup") {
       const { data, error } = await client.auth.signUp({
@@ -212,8 +216,16 @@ form.addEventListener("submit", async (event) => {
        */
 
       if (data.session) {
-        window.location.href = "https://aepxtech.vercel.app/";
+        /*
+         * Sync profile before leaving
+         * the account page.
+         */
 
+        if (data.user) {
+          await syncUserProfile(data.user);
+        }
+
+        window.location.href = "https://aepxtech.vercel.app/";
         return;
       }
 
@@ -227,11 +239,13 @@ form.addEventListener("submit", async (event) => {
         "success",
       );
     } else {
+      /**
+       * =========================
+       * LOGIN
+       * =========================
+       */
 
-    /* =========================
-         LOGIN
-      ========================== */
-      const { error } = await client.auth.signInWithPassword({
+      const { data, error } = await client.auth.signInWithPassword({
         email: userEmail,
         password: userPassword,
       });
@@ -241,11 +255,19 @@ form.addEventListener("submit", async (event) => {
       }
 
       /*
+       * Sync the authenticated user's
+       * profile before redirecting.
+       */
+
+      if (data.user) {
+        await syncUserProfile(data.user);
+      }
+
+      /*
        * Successful email login.
        */
 
       window.location.href = "https://aepxtech.vercel.app/";
-
       return;
     }
   } catch (error) {
@@ -257,9 +279,61 @@ form.addEventListener("submit", async (event) => {
   }
 });
 
-/* =========================================
-   DISPLAY ACCOUNT
-========================================= */
+/**
+ * =========================================
+ * SYNC USER PROFILE TO DATABASE
+ * =========================================
+ */
+
+async function syncUserProfile(user) {
+  if (!client || !user) {
+    return false;
+  }
+
+  const metadata = user.user_metadata || {};
+
+  const fullName =
+    metadata.full_name ||
+    metadata.name ||
+    user.email?.split("@")[0] ||
+    "AEPX User";
+
+  /*
+   * Save/update the public.profiles row.
+   *
+   * The user's auth UUID is used as the
+   * profiles table ID.
+   *
+   * Email comes from Supabase Auth.
+   */
+
+  const { error } = await client.from("profiles").upsert(
+    {
+      id: user.id,
+      full_name: fullName,
+      email: user.email || null,
+      updated_at: new Date().toISOString(),
+    },
+    {
+      onConflict: "id",
+    },
+  );
+
+  if (error) {
+    console.error("Profile sync error:", error);
+    return false;
+  }
+
+  console.log("Profile synced successfully.");
+
+  return true;
+}
+
+/**
+ * =========================================
+ * DISPLAY ACCOUNT
+ * =========================================
+ */
 
 function displayAccount(user) {
   const metadata = user.user_metadata || {};
@@ -283,9 +357,11 @@ function displayAccount(user) {
 
   const provider = user.app_metadata?.provider || "email";
 
-  /* =========================
-     PROFILE INFORMATION
-  ========================== */
+  /**
+   * =========================
+   * PROFILE INFORMATION
+   * =========================
+   */
 
   document.getElementById("userName").textContent = name;
 
@@ -296,9 +372,11 @@ function displayAccount(user) {
   document.getElementById("accountProvider").textContent =
     provider === "google" ? "Google" : "Email & Password";
 
-  /* =========================
-     MEMBER SINCE
-  ========================== */
+  /**
+   * =========================
+   * MEMBER SINCE
+   * =========================
+   */
 
   if (user.created_at) {
     const date = new Date(user.created_at);
@@ -313,9 +391,11 @@ function displayAccount(user) {
     document.getElementById("memberSince").textContent = "—";
   }
 
-  /* =========================
-     PROFILE PICTURE
-  ========================== */
+  /**
+   * =========================
+   * PROFILE PICTURE
+   * =========================
+   */
 
   const avatarContainer = document.getElementById("avatarContainer");
 
@@ -347,9 +427,11 @@ function displayAccount(user) {
     createFallbackAvatar(avatarContainer, name);
   }
 
-  /* =========================
-     SHOW DASHBOARD
-  ========================== */
+  /**
+   * =========================
+   * SHOW DASHBOARD
+   * =========================
+   */
 
   loading.style.display = "none";
 
@@ -358,9 +440,11 @@ function displayAccount(user) {
   accountDashboard.style.display = "block";
 }
 
-/* =========================================
-   FALLBACK AVATAR
-========================================= */
+/**
+ * =========================================
+ * FALLBACK AVATAR
+ * =========================================
+ */
 
 function createFallbackAvatar(container, name) {
   const fallback = document.createElement("div");
@@ -372,9 +456,11 @@ function createFallbackAvatar(container, name) {
   container.appendChild(fallback);
 }
 
-/* =========================================
-   DISPLAY LOGIN
-========================================= */
+/**
+ * =========================================
+ * DISPLAY LOGIN
+ * =========================================
+ */
 
 function displayLogin() {
   loading.style.display = "none";
@@ -384,9 +470,11 @@ function displayLogin() {
   authView.hidden = false;
 }
 
-/* =========================================
-   SESSION CHECK
-========================================= */
+/**
+ * =========================================
+ * SESSION CHECK
+ * =========================================
+ */
 
 async function updateSession() {
   if (!client) {
@@ -417,15 +505,25 @@ async function updateSession() {
   const session = data.session;
 
   if (session && session.user) {
+    /*
+     * Save the user's name/email into
+     * public.profiles whenever the
+     * account page loads.
+     */
+
+    await syncUserProfile(session.user);
+
     displayAccount(session.user);
   } else {
     displayLogin();
   }
 }
 
-/* =========================================
-   LOGOUT
-========================================= */
+/**
+ * =========================================
+ * LOGOUT
+ * =========================================
+ */
 
 logoutButton.addEventListener("click", async () => {
   if (!client) {
@@ -455,16 +553,27 @@ logoutButton.addEventListener("click", async () => {
   window.location.href = "https://aepxtech.vercel.app/";
 });
 
-/* =========================================
-   AUTH STATE LISTENER
-========================================= */
+/**
+ * =========================================
+ * AUTH STATE LISTENER
+ * =========================================
+ */
 
 if (client) {
   client.auth.onAuthStateChange((event, session) => {
     console.log("Auth event:", event);
 
     if (event === "SIGNED_IN" && session?.user) {
-      displayAccount(session.user);
+      /*
+       * Run profile syncing outside the
+       * immediate auth callback.
+       */
+
+      setTimeout(async () => {
+        await syncUserProfile(session.user);
+
+        displayAccount(session.user);
+      }, 0);
     }
 
     if (event === "SIGNED_OUT") {
@@ -473,8 +582,10 @@ if (client) {
   });
 }
 
-/* =========================================
-   INITIAL SESSION CHECK
-========================================= */
+/**
+ * =========================================
+ * INITIAL SESSION CHECK
+ * =========================================
+ */
 
 await updateSession();

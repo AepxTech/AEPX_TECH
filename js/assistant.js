@@ -154,14 +154,25 @@
     }
   }
 
-  function toggleAssistant() {
+  function toggleAssistant(event) {
+    console.log("AEPX launcher CLICKED");
+    console.log("Panel hidden before:", panel.hidden);
+
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
     if (panel.hidden) {
+      console.log("Opening assistant...");
       openAssistant();
     } else {
+      console.log("Closing assistant...");
       closeAssistant();
     }
-  }
 
+    console.log("Panel hidden after:", panel.hidden);
+  }
   function handleFocusTrap(event) {
     if (panel.hidden || event.key !== "Tab") {
       return;
